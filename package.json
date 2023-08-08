@@ -1,6 +1,6 @@
 {
   "name": "chia-datalayer-kv-cache",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Return Cached Key/Value pairs when requested from Chia DataLayer",
   "main": "index.js",
   "scripts": {
