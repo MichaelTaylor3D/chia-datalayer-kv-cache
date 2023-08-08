@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/MichaelTaylor3D/chia-datalayer-kv-cache#readme",
   "dependencies": {
+    "chia-datalayer-update-notifier": "^1.0.0",
     "chia-datalayer-wrapper": "^1.0.3",
     "chia-root-resolver": "^1.0.0",
     "node-cache": "^5.1.2"

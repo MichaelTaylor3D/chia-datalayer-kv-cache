@@ -4,6 +4,7 @@ const fs = require("fs").promises;
 const path = require("path");
 const Datalayer = require("chia-datalayer-wrapper");
 const { getChiaRoot } = require("chia-root-resolver");
+const datalayerNotifier = require("chia-datalayer-update-notifier");
 const defaultConfig = require("./defaultConfig");
 
 let config = defaultConfig;
@@ -57,6 +58,10 @@ const getValue = async ({ id: storeId, key }) => {
     }
   }
 
+  // Register the store to the datalayer notifier
+  // so we can invalidate the cache when a update has been detected
+  datalayerNotifier.registerStore(storeId);
+
   return value;
 };
 
@@ -101,6 +106,10 @@ const getKeys = async ({ id: storeId }) => {
     }
   }
 
+  // Register the store to the datalayer notifier
+  // so we can invalidate the cache when a update has been detected
+  datalayerNotifier.registerStore(storeId);
+
   return value;
 };
 
@@ -135,6 +144,12 @@ const invalidateCache = (storeId, key) => {
     }
   });
 };
+
+// Watch for updates in the datalayer and invalidate 
+// the cache when a update has been detected
+datalayerNotifier.startWatcher((storeId) => {
+  invalidateCache(storeId);
+});
 
 module.exports = {
   configure,
