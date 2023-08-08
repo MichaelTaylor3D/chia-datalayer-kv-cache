@@ -1,0 +1,26 @@
+{
+  "name": "chia-datalayer-kv-cache",
+  "version": "1.0.0",
+  "description": "Return Cached Key/Value pairs when requested from Chia DataLayer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/MichaelTaylor3D/chia-datalayer-kv-cache.git"
+  },
+  "keywords": [
+    "chia-blockchain"
+  ],
+  "author": "Michael Taylor",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MichaelTaylor3D/chia-datalayer-kv-cache/issues"
+  },
+  "homepage": "https://github.com/MichaelTaylor3D/chia-datalayer-kv-cache#readme",
+  "dependencies": {
+    "chia-datalayer-wrapper": "^1.0.3",
+    "chia-root-resolver": "^1.0.0"
+  }
+}
