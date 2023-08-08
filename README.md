@@ -1,24 +1,26 @@
 # chia-datalayer-kv-cache
 
-A caching module for Chia's datalayer key-value stores. It caches the values of keys in a store, in both memory (using the node-cache package) and on the file system. The package checks for cached values in the memory cache and file system before finally fetching from the datalayer if not found. 
+`chia-datalayer-kv-cache` is an NPM package designed to interact with Chia's data layer and provide a caching mechanism to enhance performance. It primarily offers methods to get and invalidate cached values, either from memory cache or from a filesystem cache. 
 
-The module provides an additional layer of caching for datalayer requests, enhancing speed and efficiency for frequent data retrievals. It leverages both in-memory caching for swift access to recent data and file system caching for longer-term, persistent storage.
+The package uses the NodeCache library for in-memory caching, and filesystem caching is achieved by storing values in a designated cache directory on disk. The package also includes support for Chia's data layer with the help of the `chia-datalayer-wrapper` package.
 
 ## Installation
 
-```
+```bash
 npm install chia-datalayer-kv-cache
 ```
 
 ## Usage
 
-Before using the `getValue` function, you may optionally use the `configure` function to specify the hosts and paths for your Chia configuration. If not used, the module will default to certain predefined values.
-
-### Promise Chain
-
 ```javascript
-const { configure, getValue } = require('chia-datalayer-kv-cache');
+const {
+  configure,
+  getValue,
+  getKeys,
+  invalidateCache,
+} = require("chia-datalayer-kv-cache");
 
+// Optional: Configure the module
 configure({
   full_node_host: "https://localhost:8555",
   datalayer_host: "https://localhost:8562",
@@ -27,62 +29,74 @@ configure({
   default_wallet_id: 1,
 });
 
-getValue('storeId', 'key')
-  .then(value => console.log(value))
-  .catch(error => console.error(error));
+// Get a value from cache or datalayer
+getValue({ id: "storeId", key: "key" })
+  .then((value) => {
+    console.log(value);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+
+// Get all keys for a storeId from cache or datalayer
+getKeys({ id: "storeId" })
+  .then((value) => {
+    console.log(value);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+
+// Invalidate a cache entry
+invalidateCache("storeId", "key");
 ```
 
-### Async/Await
+Using async/await:
 
 ```javascript
-const { configure, getValue } = require('chia-datalayer-kv-cache');
-
-configure({
-  full_node_host: "https://localhost:8555",
-  datalayer_host: "https://localhost:8562",
-  wallet_host: "https://localhost:9256",
-  certificate_folder_path: "~/.chia/mainnet/config/ssl",
-  default_wallet_id: 1,
-});
+const {
+  configure,
+  getValue,
+  getKeys,
+  invalidateCache,
+} = require("chia-datalayer-kv-cache");
 
 async function main() {
-  try {
-    const value = await getValue('storeId', 'key');
-    console.log(value);
-  } catch (error) {
-    console.error(error);
-  }
+  configure({
+    // your configuration here...
+  });
+
+  const value = await getValue({ id: "storeId", key: "key" });
+  console.log(value);
+
+  const keys = await getKeys({ id: "storeId" });
+  console.log(keys);
+
+  invalidateCache("storeId", "key");
 }
 
-main();
+main().catch((error) => console.error(error));
 ```
+
+If no configuration is provided using `configure()`, the module uses default values which can be found in the `defaultConfig.js` file.
 
 ## API
 
 ### `configure(newConfig)`
 
-Configures the module with the given `newConfig`. This step is optional, and if not performed, default configuration values will be used.
+Merge the provided configuration object with the current configuration.
 
-- `newConfig` - A configuration object containing properties: 
-  - `full_node_host`
-  - `datalayer_host`
-  - `wallet_host`
-  - `certificate_folder_path`
-  - `default_wallet_id`
+### `getValue({ id: storeId, key })`
 
-### `getValue(storeId, key)`
+Fetches the value associated with the provided `storeId` and `key` from the cache. If it's not present in the cache, it fetches from the Chia's data layer, storing the value in the cache for future retrieval.
 
-Attempts to get the value of a key in a store. First checks the memory cache, then the file system cache, and finally the datalayer if the key is not found in the caches. Returns a promise that resolves to the value of the key.
+### `getKeys({ id: storeId })`
 
-- `storeId` - The ID of the store.
-- `key` - The key to get the value of.
+Fetches all keys for the given `storeId` from the cache. If they're not present in the cache, it fetches from the Chia's data layer, storing the keys in the cache for future retrieval.
 
 ### `invalidateCache(storeId, key)`
 
-Invalidates the cache for a specific key in a store, both in the memory cache and the file system cache.
-
-- `storeId` - The ID of the store.
-- `key` - The key to invalidate the cache of.
+Invalidates a cache entry. If only the `storeId` is provided, it invalidates all entries related to that store. If both `storeId` and `key` are provided, it invalidates the specific cache entry.
 
 ## Support
 
