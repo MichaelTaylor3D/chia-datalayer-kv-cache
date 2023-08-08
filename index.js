@@ -52,7 +52,29 @@ const getValue = async (storeId, key) => {
   return value;
 };
 
+const invalidateCache = (storeId, key) => {
+  // invalidate node-cache
+  const cacheKey = `${storeId}-${key}`;
+  memoryCache.del(cacheKey);
+
+  // delete the file if it exists
+  const cacheDirectory = getCacheDirectory();
+  const filePath = path.join(cacheDirectory, storeId, key);
+
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (!err) {
+      // file exists, delete it
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          console.error(`Error while deleting the file: ${err}`);
+        }
+      });
+    }
+  });
+};
+
 module.exports = {
   configure,
   getValue,
+  invalidateCache,
 };
