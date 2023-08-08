@@ -98,6 +98,9 @@ Fetches all keys for the given `storeId` from the cache. If they're not present 
 
 Invalidates a cache entry. If only the `storeId` is provided, it invalidates all entries related to that store. If both `storeId` and `key` are provided, it invalidates the specific cache entry.
 
+## Cache AutoInvalidation
+This package uses the chia-datalayer-update-notifier package to watch the store for updates and it will automatically invalidate the cache when an update is detected.
+
 ## Support
 
 If you find this project useful, please consider supporting our work. You can send contributions to the following Chia address:

@@ -8,9 +8,11 @@ const datalayerNotifier = require("chia-datalayer-update-notifier");
 const defaultConfig = require("./defaultConfig");
 
 let config = defaultConfig;
+datalayerNotifier.configure(config);
 
 function configure(newConfig) {
   config = { ...config, ...newConfig };
+  datalayerNotifier.configure(config);
 }
 
 const getCacheDirectory = () => {
