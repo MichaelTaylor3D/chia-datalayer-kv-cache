@@ -1,5 +1,5 @@
 const NodeCache = require("node-cache");
-const memoryCache = new NodeCache();
+const memoryCache = new NodeCache({ stdTTL: 100, checkperiod: 120 });
 const fs = require("fs").promises;
 const path = require("path");
 const Datalayer = require("chia-datalayer-wrapper");
