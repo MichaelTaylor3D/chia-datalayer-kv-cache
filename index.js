@@ -40,7 +40,7 @@ const getValue = async ({ id: storeId, key }) => {
     } catch (error) {
       if (error.code === "ENOENT") {
         // If the file does not exist, get the data from the datalayer
-        const datalayer = Datalayer.rpc(config);
+        const datalayer = new Datalayer(config);
 
         value = await datalayer.getValue({ id: storeId, key });
 
@@ -88,7 +88,7 @@ const getKeys = async ({ id: storeId }) => {
     } catch (error) {
       if (error.code === "ENOENT") {
         // If the file does not exist, get the data from the datalayer
-        const datalayer = Datalayer.rpc(config);
+        const datalayer = new Datalayer(config);
 
         value = await datalayer.getKeys({ id: storeId });
 

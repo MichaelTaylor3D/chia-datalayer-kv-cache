@@ -1,6 +1,6 @@
 {
   "name": "chia-datalayer-kv-cache",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Return Cached Key/Value pairs when requested from Chia DataLayer",
   "main": "index.js",
   "scripts": {
@@ -21,7 +21,7 @@
   "homepage": "https://github.com/MichaelTaylor3D/chia-datalayer-kv-cache#readme",
   "dependencies": {
     "chia-datalayer-update-notifier": "^1.0.0",
-    "chia-datalayer": "^1.0.0",
+    "chia-datalayer": "^2.0.0",
     "chia-root-resolver": "^1.0.0",
     "node-cache": "^5.1.2"
   }
